@@ -18,7 +18,7 @@ class TodoListViewController: UITableViewController {
         
         
         
-        //print(dataFilePath)
+        print(dataFilePath)
         
         loadItems()
         // Do any additional setup after loading the view, typically from a nib.
