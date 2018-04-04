@@ -22,7 +22,7 @@ class TodoListViewController: UITableViewController {
         
         
         
-        print(dataFilePath)
+        print(dataFilePath!)
         
         loadItems()
         // Do any additional setup after loading the view, typically from a nib.
@@ -44,6 +44,7 @@ class TodoListViewController: UITableViewController {
         let item = itemArray[indexPath.row]
         
         cell.textLabel?.text = item.title
+        
         
         //Ternary operator ==>
         //value = condition ? valueIfTrue : valueIfFalse
