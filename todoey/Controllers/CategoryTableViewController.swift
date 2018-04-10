@@ -12,7 +12,7 @@ import CoreData
 class CategoryTableViewController: UITableViewController {
     
     var categoryArray = [Category]()
-    let dataFilePath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first?.appendingPathComponent("category.plist")
+    //let dataFilePath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first?.appendingPathComponent("category.plist")
     let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     
     override func viewDidLoad() {
@@ -35,14 +35,28 @@ class CategoryTableViewController: UITableViewController {
         
         return cell
     }
+    
+    //MARK: - Tableview Delegate methods
 
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        performSegue(withIdentifier: "gotoItems", sender: self)
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        let destinationVC = segue.destination as! TodoListViewController
+        
+        if let indexPath = tableView.indexPathForSelectedRow {
+            destinationVC.selectedCategory = categoryArray[indexPath.row]
+        }
+    }
    
     //MARK: - Add new category
     @IBAction func addButtonPressed(_ sender: UIBarButtonItem) {
         var textfield = UITextField()
-        let alert = UIAlertController(title: "Add New Category Item", message: "", preferredStyle: .alert)
+        let alert = UIAlertController(title: "Add New Category", message: "", preferredStyle: .alert)
         
-        let action = UIAlertAction(title: "Add Category", style: .default) { (action) in
+        let action = UIAlertAction(title: "Add", style: .default) { (action) in
             
             
             let newCategory = Category(context: self.context)
@@ -50,11 +64,11 @@ class CategoryTableViewController: UITableViewController {
             
             self.categoryArray.append(newCategory)
             
-            self.saveItems()
+            self.saveCategories()
         }
         
         alert.addTextField { (alertTextfield) in
-            alertTextfield.placeholder = "Create new category"
+            alertTextfield.placeholder = "Add new category"
             textfield = alertTextfield
         }
         alert.addAction(action)
@@ -62,7 +76,7 @@ class CategoryTableViewController: UITableViewController {
     }
     
     //MARK: - Model manipulation methods
-    func saveItems(){
+    func saveCategories(){
         
         do{
             try context.save()
@@ -80,10 +94,9 @@ class CategoryTableViewController: UITableViewController {
         }
         tableView.reloadData()
     }
+  
     
-    //MARK: - Tableview Datasource methods
     
-    //MARK: - Tableview Delegate methods
     
-    //MARK: - Data manipulation methods
+    
 }
