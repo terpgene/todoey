@@ -15,27 +15,26 @@ class CategoryTableViewController: UITableViewController {
     
     let realm = try! Realm()
     
-    var categoryArray = [Category]()
-    //let dataFilePath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first?.appendingPathComponent("category.plist")
-    let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+    var categories : Results<Category>?
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
-//        loadCategory()
+            loadCategories()
   
     }
     
     //MARK: - Tabliev Datasource methods
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return categoryArray.count
+        
+        return categories?.count ?? 1
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "CategoryCells", for: indexPath)
         
-        let cat = categoryArray[indexPath.row]
-        cell.textLabel?.text = cat.name
+        cell.textLabel?.text = categories?[indexPath.row].name ?? "No Categories Added Yet!"
+        
         
         return cell
     }
@@ -51,7 +50,7 @@ class CategoryTableViewController: UITableViewController {
         let destinationVC = segue.destination as! TodoListViewController
         
         if let indexPath = tableView.indexPathForSelectedRow {
-            destinationVC.selectedCategory = categoryArray[indexPath.row]
+            destinationVC.selectedCategory = categories?[indexPath.row]
         }
     }
    
@@ -66,7 +65,6 @@ class CategoryTableViewController: UITableViewController {
             let newCategory = Category()
             newCategory.name = textfield.text!
             
-            self.categoryArray.append(newCategory)
             
             self.save(category: newCategory)
         }
@@ -92,14 +90,12 @@ class CategoryTableViewController: UITableViewController {
         self.tableView.reloadData()
     }
     
-//    func loadCategory(with request : NSFetchRequest<Category> = Category.fetchRequest()){
-//        do {
-//            categoryArray = try context.fetch(request)
-//        }catch{
-//            print("Error fetching data from context \(error)")
-//        }
-//        tableView.reloadData()
-//    }
+    func loadCategories (){
+        categories = realm.objects(Category.self)
+        
+        tableView.reloadData()
+    }
+//
   
     
     
