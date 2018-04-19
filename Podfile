@@ -8,5 +8,6 @@ target 'todoey' do
   use_frameworks!
 
   pod 'RealmSwift'
+  pod 'SwipeCellKit'
 
 end
