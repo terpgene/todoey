@@ -8,6 +8,7 @@
 
 import UIKit
 import RealmSwift
+import ChameleonFramework
 
 
 class CategoryTableViewController: SwipeTableViewController {
@@ -22,6 +23,8 @@ class CategoryTableViewController: SwipeTableViewController {
         super.viewDidLoad()
 
             loadCategories()
+        
+            tableView.separatorStyle = .none
   
     }
     
@@ -34,8 +37,14 @@ class CategoryTableViewController: SwipeTableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let cell = super.tableView(tableView, cellForRowAt: indexPath)
-        cell.textLabel?.text = categories?[indexPath.row].name ?? "No Categories Added Yet!"
         
+        
+        if let category = categories?[indexPath.row] {
+        
+            cell.backgroundColor = UIColor(hexString: category.color )
+        
+            cell.textLabel?.text = category.name 
+        }
         return cell
     }
     
@@ -64,6 +73,7 @@ class CategoryTableViewController: SwipeTableViewController {
             
             let newCategory = Category()
             newCategory.name = textfield.text!
+            newCategory.color = UIColor.randomFlat.hexValue()
             
             
             self.save(category: newCategory)
@@ -110,6 +120,11 @@ class CategoryTableViewController: SwipeTableViewController {
                 print("Error deleting category, \(error)")
             }
         }
+    }
+    
+    func hexColor(){
+        
+        
     }
     
 }
