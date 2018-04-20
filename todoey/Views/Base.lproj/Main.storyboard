@@ -79,6 +79,9 @@
                             <outlet property="delegate" destination="vVv-dQ-gNi" id="gmk-fJ-gsY"/>
                         </connections>
                     </tableView>
+                    <toolbarItems>
+                        <barButtonItem style="plain" systemItem="flexibleSpace" id="euG-2R-AT1"/>
+                    </toolbarItems>
                     <navigationItem key="navigationItem" title="Items" id="6a0-sb-g4A">
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="4Rw-Ub-GuO">
                             <connections>
@@ -86,6 +89,7 @@
                             </connections>
                         </barButtonItem>
                     </navigationItem>
+                    <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="searchBar" destination="p12-ox-TnF" id="Cxt-5U-Yt2"/>
                     </connections>
