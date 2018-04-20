@@ -13,6 +13,7 @@ import ChameleonFramework
 class TodoListViewController: SwipeTableViewController {
     
     
+    @IBOutlet weak var searchBar: UISearchBar!
     var todoItems : Results<Item>?
     let realm = try! Realm()
     
@@ -28,8 +29,21 @@ class TodoListViewController: SwipeTableViewController {
         
         tableView.separatorStyle = .none
         
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        if let colorHex = selectedCategory?.color {
+            
+            title = selectedCategory!.name
+            
+            guard let navBar = navigationController?.navigationBar else { fatalError("Navigation Controller does not exit.")}
+            navBar.barTintColor = UIColor(hexString: colorHex)
+            searchBar.barTintColor = UIColor(hexString: colorHex)
+            
+        }
         
     }
+    
     
     //MARK: - Tableview Datasource Methods
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -42,9 +56,10 @@ class TodoListViewController: SwipeTableViewController {
         if let item = todoItems?[indexPath.row] {
             cell.textLabel?.text = item.title
             
-            if let color = FlatSkyBlue().darken(byPercentage: CGFloat(indexPath.row) / CGFloat((todoItems?.count)!)){
+            if let color = UIColor(hexString: selectedCategory!.color)?.darken(byPercentage: CGFloat(indexPath.row) / CGFloat(todoItems!.count)){
                 
                 cell.backgroundColor = color
+                cell.textLabel?.textColor = ContrastColorOf(color, returnFlat: true)
             }
             //Ternary operator ==>
             //value = condition ? valueIfTrue : valueIfFalse
