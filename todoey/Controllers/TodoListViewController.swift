@@ -38,10 +38,20 @@ class TodoListViewController: SwipeTableViewController {
             
             guard let navBar = navigationController?.navigationBar else { fatalError("Navigation Controller does not exit.")}
             navBar.barTintColor = UIColor(hexString: colorHex)
+            navBar.tintColor = ContrastColorOf(UIColor(hexString: colorHex)!, returnFlat: true)
+            navBar.largeTitleTextAttributes = [NSAttributedStringKey.foregroundColor : ContrastColorOf(UIColor(hexString: colorHex)!, returnFlat: true)]
+            
             searchBar.barTintColor = UIColor(hexString: colorHex)
             
         }
         
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        guard let originalColor = UIColor(hexString: "1D9BF6") else {fatalError()}
+        navigationController?.navigationBar.barTintColor = originalColor
+        navigationController?.navigationBar.tintColor = FlatWhite()
+        navigationController?.navigationBar.largeTitleTextAttributes = [NSAttributedStringKey.foregroundColor : FlatWhite()]
     }
     
     
